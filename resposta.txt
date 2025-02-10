@@ -1,1 +1,103 @@
 Coloque aqui todas as respostas das práticas indicadas no README.md
+
+1 - 
+
+1.1 - A rede é 172.18.0.0 e a máscara é 255.255.0.0
+
+1.2 - O Gateway é 172.18.0.1
+
+1.3 - Há duas rotas configuradas
+
+2 -
+
+2.1 - O IP da interface eth0 é 172.18.0.2/16.
+
+2.2 - Rede: 172.18.0.0 
+      Máscara: 255.255.0.0
+
+2.3 - A principal interface de rede é a eth0
+
+3 -
+
+IP www.google.com: 172.217.30.68
+IP www.whitehouse.gov: 192.0.66.51
+IP www.rnp.br: 104.18.27.22, 104.18.26.22
+IP www.ufpb.br: 150.165.254.52
+
+4 - 
+
+Pingue a interface de loopback: ping 127.0.0.1. Qual o tempo de resposta?
+
+R: Tempo de resposta médio de 0.06 ms
+
+Pingue seu próprio endereço IP dentro do container. Qual o tempo de resposta?
+
+R: Tempo de resposta médio de 0.072 ms
+
+Pingue os sites e verifique o tempo de resposta
+
+www.ufpb.br = 48.643 ms
+www.yahoo.com = 76.675
+www.brasil.gov.br = 95.676
+www.dce.ufpb.br =  indisponível, apareceu a mensagem ping: unknown host
+
+Compare os tempos de resposta para diferentes sites
+
+www.google.com → Média: 124.950 ms (mín: 60.391 ms, máx: 373.848 ms)
+www.rnp.br → Média: 67.200 ms (mín: 61.419 ms, máx: 102.040 ms)
+www.whitehouse.gov → Média: 65.363 ms (mín: 61.844 ms, máx: 74.945 ms)
+
+O que pode influenciar as diferenças nos tempos?
+
+R: A diferença de tempo de resposta nos servidores pode ser causada pela localização dos servidores, servidores mais distantes tem tempo de resposta maiores, também por congestionamento de rede, número de saltos na rota.
+
+5 -
+
+traceroute www.google.com
+traceroute www.rnp.br
+traceroute www.whitehouse.gov
+
+os três traceroute deram apenas o primeiro salto e os demais saltos nao responderam, o que pode ser causado porque alguns roteadores bloqueiam ou ignoram pacotes ICMP TTL Exceeded, usados pelo `traceroute`, por questões de segurança ou para evitar sobrecarga.
+
+A ausência de resposta pode indicar que o roteador simplesmente está configurado para não responder ao `traceroute`, mas o tráfego pode continuar fluindo normalmente, o ping pode ser usado para testar se ele está acessível.
+
+6 - 
+
+ Lista de conexões e portas de escuta (netstat -tulnp):
+   - TCP:
+     - 127.0.0.11:44901 está escutando
+   - UDP:
+     - 127.0.0.11:40463 está ativo
+
+Tabela de roteamento (netstat -r):
+   - Default Gateway: 172.18.0.1
+   - Rede conectada: 172.18.0.0/255.255.0.0
+   - Interface de saída: eth0
+
+Os resultados estão idênticos ao route -n, confirmando que o gateway padrão e a configuração da rede são idênticos.
+
+Informações adicionais: O netstat -tulnp revelou que há processos escutando em portas específicas (127.0.0.11) e o comando `netstat` pode ser útil para identificar conexões ativas e portas abertas na máquina.
+
+7 - 
+
+Teste a conectividade do servidor web na porta 80:
+
+R: O servidor respondeu e a conexão foi bem sucedida
+
+Teste a conectividade do serviço FTP na porta 21:
+
+R: Não consegui me conectar neste endereço, uma forma de diferenciar o problema é verficar se houve timeout ou falha de DNS, o que pode indicar um problema de DNS ou firewall, também se pode checar a disponibilidade do servidor usando o ping.
+
+8 - 
+
+Pesquise sobre o utilitário mtr.
+
+R: O `mtr` (My Traceroute) é uma ferramenta que combina as funções do `ping` e `traceroute`, permitindo monitorar em tempo real a rota e a latência dos pacotes enviados para um destino.
+
+Explique em que situações ele pode ser útil no gerenciamento de redes.
+
+R: Pode ser útil no diagnóstico de perda de pacotes, medição de latência, análise de rotas dinâmicas
+
+Como esses dados ajudam a diagnosticar problemas na rede?
+ 
+Se houver perda de pacotes em um salto específico, pode indicar congestionamento ou falha em um roteador intermediário, se os tempos de resposta aumentarem significativamente em determinado ponto, pode ser um indício de sobrecarga ou problemas no caminho da rede.
